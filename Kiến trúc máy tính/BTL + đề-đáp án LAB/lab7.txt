@@ -1,0 +1,105 @@
+***Bài 1:
+1.	addi $t1, $zero, 100	#t1 = 100
+2.	addi $t2, $zero, 0	#t2 = 0
+ loop:
+3.	beq $t1, $t2, exit	#t1 = t2 => exit 
+4.	addi $t1, $t1, -1	#t1 -- => t1 = 100, 99,... 50
+5.	addi $t2, $t2, 1	#t2++ => t2 = 0, 1, 2,... 50
+6.	j loop
+
+(a) 
+- single clock : tổng số lệnh thực thi = tổng số chu kỳ
+= 2 + 4*50 + 1 = 203 clock cycles
+
+- multi clock : 4*2 + (3+4*2+2)*50 + 3 = 661 clock cycles
+- pipeline : áp dụng kết quả của single clock
+5 + 203 - 1 = 207 clock cycles
+
+(b)
+- single clock : thời gian 1 chu kỳ = 150 + 100 + 100 + 150 = 600 (ns)
+=> Ts = 203*500 = 121800 ns
+
+- multi clock : 
+1 chu kỳ = thời gian thực thi lớn nhất của 1 khối = 150 ns
+=> dựa vào câu a  ta cần : 661*150 = 99150 ns
+
+- pipeline : xét thời gian 1 chu kỳ = thời gian lớn nhất thực thi trong 1 khối = 150 ns
+=> dựa vào câu a ta có 207*150 = 31050 ns
+
+(c)
+so với multi : 3.1932
+so với single clock : 3.9227
+
+(d)
+ALU đổi sang 150ns:
+- single clock : thời gian 1 chu kỳ = 150+100+150+150 = 650 ns => Ts = 203*650 = 131950 ns
+
+- multi clock:
+thời gian thực thi lớn nhất của 1 khối không đổi => vẫn là 99150 ns
+
+- pipeline : thời gian thực thi tối đa của 1 khối không đổi => vẫn là 31050 ns
+so với multi : 3.1932
+so với single clock : 4.2496
+
+
+***Bài 2:
+(a) lệnh 3 cần dữ li ệu được ghi vào $t1 và $t2 của lệnh 1, 2 và lệnh 4, 5
+(b)
+- chèn 2 stall giữa (2) và (3), 1 stall sau lệnh 6 (vì sau J là beq )
+loop 50 lần nên cần tổng cộng  2 + 50 = 52 stalls
+
+(c) Không cần chèn stall
+
+(d)
+Không có so sánh sớm:
+3 stall giữa (3) và (4) ; 1 stall sau (6)
+tổng : 4*50 + 3 = 203 stalls
+Có so sánh sớm
+1 stall giữa (2) và (3); 1 stall giữa (3) và (4); 1 stall sau (6)
+tổng : 1 + 2*50 + 1 = 102 stalls
+(e) 
+	addi $t1, $zero, 100
+	addi $t2, $zero, 0	
+loop:
+	beq $t1, $t2, exit
+	addi $t1, $t1, -1
+	addi $t2, $t2, 1
+	j loop
+ Không thể sắp xếp để tối ưu hơn được nữa
+
+***Bài 3
+1.	addi $t1, $zero, 100
+2.	addi $t2, $zero, 100
+3.	add $t3, $t1, $t2
+4.	lw $t4, 0($a0)
+5.	lw $t5, 4($a0)
+6.	and $t6, $t4, $t5
+7.	sw $t6, 8($a0)
+
+(a) lệnh 3 cần dư liệu được ghi vào $t1 và $t2 của lệnh 1 2
+    lệnh 6 cần dữ liệu được ghi vào $t4 và $t5 của lệnh 4 5
+    lệnh 7 cần dữ liệu được ghi vào $t6 của lệnh 6
+
+(b)
+(2) và (3) : 2 stalls
+(5) và (6) : 2 stalls
+(6) và (7) : 2 stalls
+
+
+(c)
+1 stall giữa (5) và (6)
+(d) vì không có lệnh branch nên không đề cập
+(e) 
+1.	lw $t4, 0($a0)
+2.	lw $t5, 4($a0)
+3.	addi $t1, $zero, 100
+4.	addi $t2, $zero, 100
+5.	and $t6, $t4, $t5
+6.	add $t3, $t1, $t2
+7.	sw $t6, 8($a0)
+=> chỉ cần 1 stall ở giữa (5) và (6) nếu ko forwarding
+=> không cần stall nếu có forwarding
+
+
+
+ 

@@ -1,0 +1,19 @@
+Ex 1:
+a. OxCA202000 = 1100 1010 0010 0000 0010 0000 0000 0000 (2)
+=>S = 1 (10)
+  Exponent = 100 1010 0 (2) = 148 (10)
+  Fraction = 010 0000 0010 0000 0000 0000 (2) 
+=> (-1)^1 x 1.010 0000 0010 0000 0000 0000 x 2^21
+= -1 x 1010 0000 0010 0000 0000 00.00
+=> the answer is -2623488 (10) 
+
+b. 36.15625 = 100100.00101 = (-1)^0 x 1.0010000101 x 2^(132-127)
+0 1000 0100 0010 0001 0100 0000 0000 000 
+=> the answer is Ox4210A000
+
+c. Không thể biểu diễn chính xác 20.2 ở dạng IEEE 754 vì phần thập phân 0.2 không thể biểu 
+diễn chính xác dưới dạng tổng của các 2^x (x < 0 và x thuộc Z) 
+
+Các số chấm động IEEE 754 với có dạng m * 2^(e) nằm trong khoảng [2^e, 2^(e+1) ) sẽ có khoảng cách
+bằng nhau và bằng 2^(e+1-p) với p là số chữ số sau dấu chấm động của m (VD : m = 1.001 thì
+p = 3) do đó 2 số thực liên tiếp nhau nằm trong khoảng trên có thể bằng nhau.
